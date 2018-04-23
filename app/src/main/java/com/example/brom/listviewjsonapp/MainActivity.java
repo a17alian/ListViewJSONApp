@@ -4,6 +4,11 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,11 +16,17 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 // Create a new class, Mountain, that can hold your JSON data
 
+
 // Create a ListView as in "Assignment 1 - Toast and ListView"
+
+
 
 // Retrieve data from Internet service using AsyncTask and the included networking code
 
@@ -26,10 +37,36 @@ import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
 
+    private String[] mountainNames = {"Matterhorn","Mont Blanc","Denali"};
+    private String[] mountainLocations = {"Alps","Alps","Alaska"};
+    private int[] mountainHeights ={4478,4808,6190};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        String[] rawData = {"Leif", "Ulla", "Kjell"};
+        // 2. Create a List object with your array from step 1 as in-data
+        List<String> listData = new ArrayList<String>(Arrays.asList(mountainNames));
+
+        // 3. Create an ArrayAdapter object that connects
+        ArrayAdapter adapter = new ArrayAdapter(getApplicationContext(),R.layout.list_item_textview,R.id.my_item_textview,listData);
+
+        ListView myListView = (ListView)findViewById(R.id.my_listview);
+
+        myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                String toast = "Name: " + mountainNames[position] + '\n' +"Location: " + mountainLocations[position] + '\n' + "Height: " + mountainHeights[position];
+                Toast.makeText(MainActivity.this, toast, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        Mountain m = new Mountain ("K2");
+        Mountain m2 = new Mountain("Fuhi", "Japan", 3776);
+
+
     }
 
     private class FetchData extends AsyncTask<Void,Void,String>{
@@ -45,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
             try {
                 // Construct the URL for the Internet service
-                URL url = new URL("_ENTER_THE_URL_TO_THE_PHP_SERVICE_SERVING_JSON_HERE_");
+                URL url = new URL("http://wwwlab.iit.his.se/brom/kurser/mobilprog/jsonservice.php");
 
                 // Create the request to the PHP-service, and open the connection
                 urlConnection = (HttpURLConnection) url.openConnection();
