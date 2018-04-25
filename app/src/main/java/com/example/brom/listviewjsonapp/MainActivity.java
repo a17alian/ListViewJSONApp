@@ -1,14 +1,23 @@
 package com.example.brom.listviewjsonapp;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -37,35 +46,55 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private String[] mountainNames = {"Matterhorn","Mont Blanc","Denali"};
-    private String[] mountainLocations = {"Alps","Alps","Alaska"};
-    private int[] mountainHeights ={4478,4808,6190};
+    private ArrayAdapter adapter;
+    private List<Mountain> listData = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        new FetchData().execute();
 
-        String[] rawData = {"Leif", "Ulla", "Kjell"};
         // 2. Create a List object with your array from step 1 as in-data
-        List<String> listData = new ArrayList<String>(Arrays.asList(mountainNames));
+
 
         // 3. Create an ArrayAdapter object that connects
-        ArrayAdapter adapter = new ArrayAdapter(getApplicationContext(),R.layout.list_item_textview,R.id.my_item_textview,listData);
+         adapter = new ArrayAdapter(getApplicationContext(),R.layout.list_item_textview,R.id.my_item_textview,listData);
 
         ListView myListView = (ListView)findViewById(R.id.my_listview);
 
         myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                String toast = "Name: " + mountainNames[position] + '\n' +"Location: " + mountainLocations[position] + '\n' + "Height: " + mountainHeights[position];
-                Toast.makeText(MainActivity.this, toast, Toast.LENGTH_SHORT).show();
+                Mountain m = listData.get(position);
+                Toast.makeText(getApplicationContext(),m.info(),Toast.LENGTH_SHORT).show();
+
             }
         });
 
-        Mountain m = new Mountain ("K2");
-        Mountain m2 = new Mountain("Fuhi", "Japan", 3776);
+        myListView.setAdapter(adapter);
 
+    }
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.about:
+                Toast.makeText(getApplicationContext(), "This is an app about mountains" + '\n' + "Created by Alice Anglesjö",Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.refresh:
+                adapter.clear();
+                new FetchData().execute();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
 
     }
 
@@ -82,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
 
             try {
                 // Construct the URL for the Internet service
-                URL url = new URL("http://wwwlab.iit.his.se/brom/kurser/mobilprog/jsonservice.php");
+                URL url = new URL("http://wwwlab.iit.his.se/brom/kurser/mobilprog/dbservice/admin/getdataasjson.php?type=brom");
 
                 // Create the request to the PHP-service, and open the connection
                 urlConnection = (HttpURLConnection) url.openConnection();
@@ -132,12 +161,46 @@ public class MainActivity extends AppCompatActivity {
         }
         @Override
         protected void onPostExecute(String o) {
+
             super.onPostExecute(o);
+            Log.d("alicehej", "data" + o);
             // This code executes after we have received our data. The String object o holds
             // the un-parsed JSON string or is null if we had an IOException during the fetch.
 
             // Implement a parsing code that loops through the entire JSON and creates objects
             // of our newly created Mountain class.
+            try {
+                adapter.clear();
+                // Ditt JSON-objekt som Java
+                JSONArray json1 = new JSONArray(o);
+
+                for(int i = 0; i < json1.length(); i++) {
+
+                    JSONObject berg = json1.getJSONObject(i);
+                    Log.d("alicehej", "berg" + berg.toString());
+
+                    int ID = berg.getInt("ID");
+                    String name = berg.getString("name");
+                    String type = berg.getString("type");
+                    String company = berg.getString("company");
+                    String location = berg.getString("location");
+                    String category = berg.getString("category");
+                    int size = berg.getInt("size");
+                    int cost = berg.getInt("cost");
+
+                    Mountain m = new Mountain(name, location, size);
+
+                    adapter.add(m);
+
+                }
+
+
+            } catch (JSONException e) {
+                Log.e("brom","E:"+e.getMessage());
+            }
+
+
+
         }
     }
 }
