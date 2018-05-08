@@ -24,8 +24,12 @@ public class Mountain {
         height = -1;
     }
 
-    // Metoder
-    public String toString(){ return name;}
+
+
+
+    public String locationInfo(){ return location;}
+    public String heightInfo(){ return Integer.toString(height);}
+
 
     public String info(){
         String str = name;
@@ -36,6 +40,11 @@ public class Mountain {
         str+="m. ";
 
         return str;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 
 }
