@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),"HLOO",Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), Details.class);
                 intent.putExtra("image", item.imgInfo());
+                intent.putExtra("info", item.info());
                 startActivity(intent);
             }
         });
@@ -188,9 +189,10 @@ public class MainActivity extends AppCompatActivity {
                     mRecyclerView.setAdapter(new MountainAdapter(listData, new MountainAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(Mountain item) {
-                            Toast.makeText(getApplicationContext(),"HLOO",Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(getApplicationContext(),Details.class);
                             intent.putExtra("image", item.imgInfo());
+                            intent.putExtra("info", item.info());
+
                             startActivity(intent);
                         }
                     }));

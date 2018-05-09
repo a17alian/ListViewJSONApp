@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.io.InputStream;
 
@@ -28,6 +29,9 @@ public class Details extends AppCompatActivity {
 
         Intent intent = getIntent();
         String imgUrl = intent.getStringExtra("image");
+        String info = intent.getStringExtra("info");
+        TextView textView = (TextView) findViewById(R.id.my_info);
+        textView.setText(info);
 
         new DownloadImageTask((ImageView) findViewById(R.id.img_1))
                .execute(imgUrl);
