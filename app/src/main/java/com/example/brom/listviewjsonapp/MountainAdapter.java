@@ -16,7 +16,10 @@ import java.util.List;
 public class MountainAdapter extends RecyclerView.Adapter<MountainAdapter.ViewHolder>{
     public List<Mountain> mDataset;
 
-
+    public interface OnItemClickListener {
+        void onItemClick(Mountain item);
+    }
+    private final OnItemClickListener listener;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
@@ -31,8 +34,9 @@ public class MountainAdapter extends RecyclerView.Adapter<MountainAdapter.ViewHo
         }
     }
 
-    public MountainAdapter(List<Mountain> myDataset) {
+    public MountainAdapter(List<Mountain> myDataset, OnItemClickListener inListener) {
         mDataset = myDataset;
+        listener = inListener;
     }
 
     // Create new views (invoked by the layout manager)
@@ -44,18 +48,24 @@ public class MountainAdapter extends RecyclerView.Adapter<MountainAdapter.ViewHo
                 .inflate(R.layout.my_textview, parent, false);
 
         ViewHolder vh = new ViewHolder(v);
-
         return vh;
     }
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         holder.mTextView.setText(mDataset.get(position).toString());
         holder.mTextView2.setText(mDataset.get(position).locationInfo());
         holder.mTextView3.setText(mDataset.get(position).heightInfo());
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onItemClick(mDataset.get(position));
+            }
+        });
 
     }
 

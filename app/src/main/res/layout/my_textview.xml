@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingLeft="16dp"
+
     android:paddingTop="10dp"
     android:divider="?android:dividerHorizontal"
     android:showDividers="end"
@@ -11,6 +11,7 @@
 
     <TextView
         android:id="@+id/textview"
+        android:paddingLeft="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="16sp"
@@ -20,6 +21,7 @@
 
     <TextView
         android:id="@+id/textview2"
+        android:paddingLeft="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="14sp"
@@ -27,6 +29,7 @@
 
     <TextView
         android:id="@+id/textview3"
+        android:paddingLeft="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="14sp"

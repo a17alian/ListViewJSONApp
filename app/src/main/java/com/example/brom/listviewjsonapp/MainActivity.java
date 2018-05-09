@@ -52,7 +52,12 @@ public class MainActivity extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new MountainAdapter(listData);
+        mAdapter = new MountainAdapter(listData, new MountainAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Mountain item) {
+                Toast.makeText(getApplicationContext(),"HLOO",Toast.LENGTH_SHORT).show();
+            }
+        });
         mRecyclerView.setAdapter(mAdapter);
 
 
@@ -174,7 +179,12 @@ public class MainActivity extends AppCompatActivity {
                     Mountain m = new Mountain(name, location, size);
 
                     listData.add(m);
-                    mRecyclerView.setAdapter(new MountainAdapter(listData));
+                    mRecyclerView.setAdapter(new MountainAdapter(listData, new MountainAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(Mountain item) {
+                            Toast.makeText(getApplicationContext(),"HLOO",Toast.LENGTH_SHORT).show();
+                        }
+                    }));
 
                 }
 
