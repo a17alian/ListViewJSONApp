@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), Details.class);
                 intent.putExtra("image", item.imgInfo());
                 intent.putExtra("info", item.info());
+                intent.putExtra("name", item.toString());
                 startActivity(intent);
             }
         });
@@ -192,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
                             Intent intent = new Intent(getApplicationContext(),Details.class);
                             intent.putExtra("image", item.imgInfo());
                             intent.putExtra("info", item.info());
-
+                            intent.putExtra("name", item.toString());
                             startActivity(intent);
                         }
                     }));

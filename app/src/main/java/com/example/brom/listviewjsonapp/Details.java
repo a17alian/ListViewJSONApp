@@ -33,6 +33,11 @@ public class Details extends AppCompatActivity {
         TextView textView = (TextView) findViewById(R.id.my_info);
         textView.setText(info);
 
+        String name = intent.getStringExtra("name");
+        TextView textView2 = (TextView) findViewById(R.id.my_name);
+
+        textView2.setText(name);
+
         new DownloadImageTask((ImageView) findViewById(R.id.img_1))
                .execute(imgUrl);
     }

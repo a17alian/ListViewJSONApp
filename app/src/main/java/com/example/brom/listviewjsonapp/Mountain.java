@@ -32,10 +32,10 @@ public class Mountain {
     public String info(){
         String str = name;
         str+= " is located in ";
-        str+= location;
-        str+= " and has a height of ";
+        str+= location + '\n';
+        str+= "It has a height of ";
         str+= Integer.toString(height);
-        str+="m. ";
+        str+="m. "  + '\n';
 
         return str;
     }
