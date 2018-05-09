@@ -56,6 +56,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(Mountain item) {
                 Toast.makeText(getApplicationContext(),"HLOO",Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(), Details.class);
+                intent.putExtra("image", item.imgInfo());
+                startActivity(intent);
             }
         });
         mRecyclerView.setAdapter(mAdapter);
@@ -175,14 +178,20 @@ public class MainActivity extends AppCompatActivity {
                     String category = berg.getString("category");
                     int size = berg.getInt("size");
                     int cost = berg.getInt("cost");
+                    JSONObject aData = new JSONObject(berg.getString("auxdata"));
+                    String bild = aData.getString("img");
 
-                    Mountain m = new Mountain(name, location, size);
+
+                    Mountain m = new Mountain(name, location, size, bild);
 
                     listData.add(m);
                     mRecyclerView.setAdapter(new MountainAdapter(listData, new MountainAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(Mountain item) {
                             Toast.makeText(getApplicationContext(),"HLOO",Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(getApplicationContext(),Details.class);
+                            intent.putExtra("image", item.imgInfo());
+                            startActivity(intent);
                         }
                     }));
 

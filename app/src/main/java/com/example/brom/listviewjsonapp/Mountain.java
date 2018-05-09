@@ -7,28 +7,26 @@ package com.example.brom.listviewjsonapp;
 public class Mountain {
     private String name;
     private String location;
+    private String imgUrl;
     private int height;
 
 
     // Constructor
-    public Mountain (String inName, String inLocation, int inHeight){
+    public Mountain (String inName, String inLocation, int inHeight, String inImg){
         name = inName;
         location = inLocation;
         height = inHeight;
+        imgUrl = inImg;
 
     }
-
-    public Mountain (String inName){
-        name = inName;
-        location = "";
-        height = -1;
-    }
-
-
 
 
     public String locationInfo(){ return location;}
     public String heightInfo(){ return Integer.toString(height);}
+
+    public String imgInfo(){
+        return imgUrl;
+    }
 
 
     public String info(){
